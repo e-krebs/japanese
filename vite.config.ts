@@ -1,0 +1,14 @@
+import { defineConfig } from "vite-plus";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+
+// https://vite.dev/config/
+export default defineConfig({
+  staged: {
+    "*": "vp check --fix",
+  },
+  lint: { options: { typeAware: true, typeCheck: true } },
+  fmt: { singleQuote: true },
+  plugins: [react(), tailwindcss()],
+  base: "/japanese/",
+});

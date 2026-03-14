@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+body {
+  font-family: "Noto Sans JP", sans-serif;
+  @apply bg-slate-700 text-white;
+}
+
+button {
+  @apply rounded-md border px-4 py-2 cursor-pointer;
+}
