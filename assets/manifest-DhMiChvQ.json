@@ -1,0 +1,16 @@
+{
+  "short_name": "japanese",
+  "name": "japanese",
+  "icons": [
+    {
+      "src": "/src/assets/favicon.svg",
+      "sizes": "100x100",
+      "type": "image/svg+xml"
+    }
+  ],
+  "scope": "/japanese/",
+  "start_url": "/japanese/",
+  "display": "standalone",
+  "background_color": "oklch(37.2% 0.044 257.287)",
+  "theme_color": "oklch(37.2% 0.044 257.287)"
+}
