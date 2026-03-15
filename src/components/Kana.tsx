@@ -1,7 +1,7 @@
 import { twMerge } from "tailwind-merge";
 
 import type { Char } from "../data";
-import { useKanaProps } from "../hooks";
+import { useKanaProps, useSelectedKanas } from "../hooks";
 
 interface KanaProps {
   kana: Char;
@@ -11,6 +11,7 @@ interface KanaProps {
 
 export const Kana = ({ kana, isDiacritic = false, isPalatalizer = false }: KanaProps) => {
   const { showDiacritics, showPalatalizers } = useKanaProps();
+  const { addKana } = useSelectedKanas();
 
   const hasDiacritics = !!(kana["゛"] || kana["゜"]);
   const hasPalatalizers =
@@ -19,13 +20,14 @@ export const Kana = ({ kana, isDiacritic = false, isPalatalizer = false }: KanaP
 
   return (
     <>
-      <div
+      <button
         className={twMerge(
-          "px-4 py-2 w-17.5 flex flex-col items-center border border-slate-500 rounded-md",
+          "px-4 py-2 w-17.5 flex flex-col items-center border border-slate-500 rounded-md active:bg-slate-600",
           (isDiacritic || isPalatalizer) && "w-auto flex-row justify-center gap-2",
           (hasPalatalizers || isPalatalizer) && "bg-sky-500/10",
           (hasDiacritics || isDiacritic) && "border-yellow-400/50",
         )}
+        onClick={() => addKana(kana)}
       >
         <div
           className={twMerge("text-4xl text-nowrap", (isDiacritic || isPalatalizer) && "text-xs")}
@@ -35,7 +37,7 @@ export const Kana = ({ kana, isDiacritic = false, isPalatalizer = false }: KanaP
         <div className={twMerge("text-base", (isDiacritic || isPalatalizer) && "text-xs")}>
           {kana.romaji}
         </div>
-      </div>
+      </button>
       {showDiacritics && (
         <>
           {kana["゛"] && <Kana kana={kana["゛"]} isDiacritic={true} />}
