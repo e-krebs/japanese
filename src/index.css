@@ -8,3 +8,15 @@ body {
 button:not(:disabled) {
   @apply cursor-pointer;
 }
+
+@custom-variant color-vibrant {
+  &:where([data-color="vibrant"] *) {
+    @slot;
+  }
+}
+
+@custom-variant color-standard {
+  &:where([data-color="standard"] *) {
+    @slot;
+  }
+}

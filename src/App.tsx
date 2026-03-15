@@ -46,7 +46,7 @@ export const App = () => {
         ))}
       </div>
 
-      <Toolbar>
+      <Toolbar color="vibrant">
         <Toolbar.ButtonGroup>
           <Toolbar.Button
             selected={type === "hiragana"}
