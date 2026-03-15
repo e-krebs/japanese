@@ -1,229 +1,81 @@
 import { Eye, EyeOff } from "lucide-react";
 import { useReducer } from "react";
-import { twMerge } from "tailwind-merge";
 
-import { hiraganas as allHiraganas, type Char } from "./data";
+import { Kana, Toolbar } from "./components";
+import { hiraganas as allHiraganas, katakanas as allKatakanas, type SyllabaryType } from "./data";
 import "./index.css";
 import "@fontsource/noto-sans-jp/400.css";
-
-const Kana = ({
-  data,
-  showDiacritics = false,
-  showPalatalizers = false,
-  isDiacritic = false,
-  isPalatalizer = false,
-  hasPalatalizers: overrideHasPalatalizers = false,
-}: {
-  data: Char;
-  showDiacritics?: boolean;
-  showPalatalizers?: boolean;
-  isDiacritic?: boolean;
-  isPalatalizer?: boolean;
-  hasPalatalizers?: boolean;
-}) => {
-  const hasDiacritics = !!(data["゛"] || data["゜"]);
-  const hasPalatalizers = overrideHasPalatalizers || !!(data["や"] || data["ゆ"] || data["よ"]);
-
-  return (
-    <>
-      <div
-        className={twMerge(
-          "px-4 py-2 w-17.5 flex flex-col items-center border border-slate-500 rounded-md",
-          (isDiacritic || isPalatalizer) && "w-auto flex-row justify-center gap-2",
-          (hasPalatalizers || isPalatalizer) && "bg-sky-500/10",
-          (hasDiacritics || isDiacritic) && "border-yellow-400/50",
-        )}
-      >
-        <div
-          className={twMerge("text-4xl text-nowrap", (isDiacritic || isPalatalizer) && "text-xs")}
-        >
-          {data.char}
-        </div>
-        <div className={twMerge("text-base", (isDiacritic || isPalatalizer) && "text-xs")}>
-          {data.romaji}
-        </div>
-      </div>
-      {showDiacritics && (
-        <>
-          {data["゛"] && (
-            <Kana
-              data={{ char: "゛", romaji: data["゛"].romaji }}
-              isDiacritic={true}
-              showDiacritics={showDiacritics}
-              showPalatalizers={showPalatalizers}
-              hasPalatalizers={!!(data["゛"]?.["や"] || data["゛"]?.["ゆ"] || data["゛"]?.["よ"])}
-            />
-          )}
-          {data["゜"] && (
-            <Kana
-              data={{ char: "゜", romaji: data["゜"].romaji }}
-              isDiacritic={true}
-              showDiacritics={showDiacritics}
-              showPalatalizers={showPalatalizers}
-              hasPalatalizers={!!(data["゜"]?.["や"] || data["゜"]?.["ゆ"] || data["゜"]?.["よ"])}
-            />
-          )}
-        </>
-      )}
-      {showPalatalizers && hasPalatalizers && (
-        <div className="flex overflow-visible max-w-17.5">
-          <div className="grid grid-cols-[repeat(3,minmax(auto,1fr))]">
-            {data["や"] && (
-              <Kana
-                data={data["や"]}
-                isPalatalizer={true}
-                showDiacritics={showDiacritics}
-                showPalatalizers={showPalatalizers}
-              />
-            )}
-            {data["ゆ"] && (
-              <Kana
-                data={data["ゆ"]}
-                isPalatalizer={true}
-                showDiacritics={showDiacritics}
-                showPalatalizers={showPalatalizers}
-              />
-            )}
-            {data["よ"] && (
-              <Kana
-                data={data["よ"]}
-                isPalatalizer={true}
-                showDiacritics={showDiacritics}
-                showPalatalizers={showPalatalizers}
-              />
-            )}
-            {showDiacritics && (
-              <>
-                {(data["゛"]?.["や"] || data["゛"]?.["ゆ"] || data["゛"]?.["よ"]) && (
-                  <>
-                    {data["゛"]?.["や"] && (
-                      <Kana
-                        data={data["゛"]["や"]}
-                        isPalatalizer={true}
-                        isDiacritic={true}
-                        showDiacritics={showDiacritics}
-                        showPalatalizers={showPalatalizers}
-                      />
-                    )}
-                    {data["゛"]?.["ゆ"] && (
-                      <Kana
-                        data={data["゛"]["ゆ"]}
-                        isPalatalizer={true}
-                        isDiacritic={true}
-                        showDiacritics={showDiacritics}
-                        showPalatalizers={showPalatalizers}
-                      />
-                    )}
-                    {data["゛"]?.["よ"] && (
-                      <Kana
-                        data={data["゛"]["よ"]}
-                        isPalatalizer={true}
-                        isDiacritic={true}
-                        showDiacritics={showDiacritics}
-                        showPalatalizers={showPalatalizers}
-                      />
-                    )}
-                  </>
-                )}
-                {(data["゜"]?.["や"] || data["゜"]?.["ゆ"] || data["゜"]?.["よ"]) && (
-                  <>
-                    {data["゜"]?.["や"] && (
-                      <Kana
-                        data={data["゜"]["や"]}
-                        isPalatalizer={true}
-                        isDiacritic={true}
-                        showDiacritics={showDiacritics}
-                        showPalatalizers={showPalatalizers}
-                      />
-                    )}
-                    {data["゜"]?.["ゆ"] && (
-                      <Kana
-                        data={data["゜"]["ゆ"]}
-                        isPalatalizer={true}
-                        isDiacritic={true}
-                        showDiacritics={showDiacritics}
-                        showPalatalizers={showPalatalizers}
-                      />
-                    )}
-                    {data["゜"]?.["よ"] && (
-                      <Kana
-                        data={data["゜"]["よ"]}
-                        isPalatalizer={true}
-                        isDiacritic={true}
-                        showDiacritics={showDiacritics}
-                        showPalatalizers={showPalatalizers}
-                      />
-                    )}
-                  </>
-                )}
-              </>
-            )}
-          </div>
-        </div>
-      )}
-    </>
-  );
-};
+import { useKanaProps } from "./hooks";
 
 interface State {
-  showDiacritics: boolean;
-  showPalatalizers: boolean;
+  type: SyllabaryType;
+  allKanas: typeof allHiraganas | typeof allKatakanas;
 }
 
 interface Action {
-  type: "toggleDiacritics" | "togglePalatalizers";
+  type: "setHiragana" | "setKatakana";
 }
 
 export const App = () => {
-  const [{ showDiacritics, showPalatalizers }, dispatch] = useReducer<State, [Action]>(
+  const { showDiacritics, showPalatalizers, toggleDiacritics, togglePalatalizers } = useKanaProps();
+
+  const [{ type, allKanas }, dispatch] = useReducer<State, [Action]>(
     (state, action) => {
       switch (action.type) {
-        case "toggleDiacritics":
-          return { ...state, showDiacritics: !state.showDiacritics };
-        case "togglePalatalizers":
-          return { ...state, showPalatalizers: !state.showPalatalizers };
+        case "setHiragana": {
+          return { ...state, type: "hiragana", allKanas: allHiraganas };
+        }
+        case "setKatakana": {
+          return { ...state, type: "katakana", allKanas: allKatakanas };
+        }
       }
     },
-    {
-      showDiacritics: false,
-      showPalatalizers: false,
-    },
+    { type: "hiragana", allKanas: allHiraganas },
   );
 
   return (
-    <div className="relative px-4 pb-6 min-h-screen max-w-fit mx-auto flex flex-col items-center">
+    <div className="relative px-4 pb-24 min-h-screen max-w-fit mx-auto flex flex-col items-center">
       <div className="sticky top-0 w-105.5 p-4 mb-6 bg-slate-700/50 backdrop-blur-sm grid grid-cols-3">
         <button
-          onClick={() => dispatch({ type: "toggleDiacritics" })}
-          className="border-yellow-400/50 bg-white/10 flex gap-2 items-center justify-around"
+          onClick={toggleDiacritics}
+          className="rounded-md border px-4 py-2 border-yellow-400/50 bg-white/10 flex gap-2 items-center justify-around"
         >
           {showDiacritics ? <EyeOff className="size-4" /> : <Eye className="size-4" />} ゛゜
         </button>
         <button
-          onClick={() => dispatch({ type: "togglePalatalizers" })}
-          className="border-white/50 bg-sky-500/10 col-start-3 flex gap-2 items-center justify-around"
+          onClick={togglePalatalizers}
+          className="rounded-md border px-4 py-2 border-white/50 bg-sky-500/10 col-start-3 flex gap-2 items-center justify-around"
         >
           {showPalatalizers ? <EyeOff className="size-4" /> : <Eye className="size-4" />} やゆよ
         </button>
       </div>
 
       <div className="flex flex-col items-center gap-5">
-        {allHiraganas.map((hiraganas, index) => (
+        {allKanas.map((kanasRow, index) => (
           <div key={index} className="flex gap-2.5">
-            {hiraganas.map((data) => (
-              <div key={data.char}>
-                <Kana
-                  data={data}
-                  showDiacritics={showDiacritics}
-                  showPalatalizers={showPalatalizers}
-                />
+            {kanasRow.map((kana) => (
+              <div key={kana.char}>
+                <Kana kana={kana} />
               </div>
             ))}
           </div>
         ))}
       </div>
+
+      <Toolbar>
+        <Toolbar.Button
+          selected={type === "hiragana"}
+          onClick={() => dispatch({ type: "setHiragana" })}
+        >
+          あ
+        </Toolbar.Button>
+        <Toolbar.Button
+          selected={type === "katakana"}
+          onClick={() => dispatch({ type: "setKatakana" })}
+        >
+          ア
+        </Toolbar.Button>
+      </Toolbar>
     </div>
   );
 };
-
-export default App;
