@@ -1,2 +1,2 @@
-export * from "./KanaContextProvider";
-export * from "./useKanaProps";
+export * from "./KanaProps";
+export * from "./SelectedKanas";
