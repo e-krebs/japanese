@@ -7,19 +7,15 @@ interface KanaProps {
   kana: Char;
   isDiacritic?: boolean;
   isPalatalizer?: boolean;
-  hasPalatalizers?: boolean;
 }
 
-export const Kana = ({
-  kana,
-  isDiacritic = false,
-  isPalatalizer = false,
-  hasPalatalizers: overrideHasPalatalizers = false,
-}: KanaProps) => {
+export const Kana = ({ kana, isDiacritic = false, isPalatalizer = false }: KanaProps) => {
   const { showDiacritics, showPalatalizers } = useKanaProps();
 
   const hasDiacritics = !!(kana["゛"] || kana["゜"]);
-  const hasPalatalizers = overrideHasPalatalizers || !!(kana["や"] || kana["ゆ"] || kana["よ"]);
+  const hasPalatalizers =
+    // don't show palatalizers for base diacritics
+    (!isDiacritic || isPalatalizer) && !!(kana["や"] || kana["ゆ"] || kana["よ"]);
 
   return (
     <>
@@ -42,20 +38,8 @@ export const Kana = ({
       </div>
       {showDiacritics && (
         <>
-          {kana["゛"] && (
-            <Kana
-              kana={{ char: kana["゛"].char, romaji: kana["゛"].romaji }}
-              isDiacritic={true}
-              hasPalatalizers={!!(kana["゛"]?.["や"] || kana["゛"]?.["ゆ"] || kana["゛"]?.["よ"])}
-            />
-          )}
-          {kana["゜"] && (
-            <Kana
-              kana={{ char: kana["゜"].char, romaji: kana["゜"].romaji }}
-              isDiacritic={true}
-              hasPalatalizers={!!(kana["゜"]?.["や"] || kana["゜"]?.["ゆ"] || kana["゜"]?.["よ"])}
-            />
-          )}
+          {kana["゛"] && <Kana kana={kana["゛"]} isDiacritic={true} />}
+          {kana["゜"] && <Kana kana={kana["゜"]} isDiacritic={true} />}
         </>
       )}
       {showPalatalizers && hasPalatalizers && (
