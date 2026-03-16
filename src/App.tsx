@@ -1,7 +1,7 @@
 import { Copy, X } from "lucide-react";
 import { useReducer } from "react";
 
-import { Kana, Toolbar } from "./components";
+import { Kana, FloatingToolbar } from "./components";
 import { hiraganas as allHiraganas, katakanas as allKatakanas, type SyllabaryType } from "./data";
 import "./index.css";
 import "@fontsource/noto-sans-jp/400.css";
@@ -44,36 +44,40 @@ export const App = () => {
       <h1 className="text-3xl pt-4 pb-7 capitalize">{type}s</h1>
 
       {kanas.length > 0 && (
-        <Toolbar position="top">
-          <Toolbar.ButtonGroup>
-            <Toolbar.Button
-              onClick={() =>
-                navigator.clipboard.writeText(
-                  kanas.map((kana) => (shownType === "kana" ? kana.char : kana.romaji)).join(""),
-                )
-              }
-            >
-              <Copy className="size-4" />
-            </Toolbar.Button>
-            <div
-              className="h-10 w-auto flex flex-col items-center justify-center cursor-pointer px-3 py-1 gap-y-2 overflow-hidden"
-              onClick={toggleShownType}
-            >
-              <div
-                className={twMerge(
-                  "text-2xl transition-[margin] duration-75",
-                  shownType === "kana" ? "mt-8" : "-mt-10",
-                )}
+        <FloatingToolbar position="top">
+          <FloatingToolbar.Toolbar color="standard">
+            <FloatingToolbar.ButtonGroup>
+              <FloatingToolbar.Button
+                onClick={() =>
+                  navigator.clipboard.writeText(
+                    kanas.map((kana) => (shownType === "kana" ? kana.char : kana.romaji)).join(""),
+                  )
+                }
               >
-                {kanas.map((kana) => kana.char).join("")}
+                <Copy className="size-4" />
+              </FloatingToolbar.Button>
+              <div
+                className="h-10 w-auto flex flex-col items-center justify-center cursor-pointer px-3 py-1 gap-y-2 overflow-hidden"
+                onClick={toggleShownType}
+              >
+                <div
+                  className={twMerge(
+                    "text-2xl transition-[margin] duration-75",
+                    shownType === "kana" ? "mt-8" : "-mt-10",
+                  )}
+                >
+                  {kanas.map((kana) => kana.char).join("")}
+                </div>
+                <div className={twMerge("text-2xl")}>
+                  {kanas.map((kana) => kana.romaji).join("")}
+                </div>
               </div>
-              <div className={twMerge("text-2xl")}>{kanas.map((kana) => kana.romaji).join("")}</div>
-            </div>
-            <Toolbar.Button onClick={clearKanas}>
-              <X className="size-4" />
-            </Toolbar.Button>
-          </Toolbar.ButtonGroup>
-        </Toolbar>
+              <FloatingToolbar.Button onClick={clearKanas}>
+                <X className="size-4" />
+              </FloatingToolbar.Button>
+            </FloatingToolbar.ButtonGroup>
+          </FloatingToolbar.Toolbar>
+        </FloatingToolbar>
       )}
 
       <div className="flex flex-col items-center gap-5">
@@ -88,38 +92,40 @@ export const App = () => {
         ))}
       </div>
 
-      <Toolbar color="vibrant">
-        <Toolbar.ButtonGroup>
-          <Toolbar.Button
-            selected={type === "hiragana"}
-            onClick={() => dispatch({ type: "setHiragana" })}
+      <FloatingToolbar position="bottom">
+        <FloatingToolbar.Toolbar color="vibrant">
+          <FloatingToolbar.ButtonGroup>
+            <FloatingToolbar.Button
+              selected={type === "hiragana"}
+              onClick={() => dispatch({ type: "setHiragana" })}
+            >
+              あ
+            </FloatingToolbar.Button>
+            <FloatingToolbar.Button
+              selected={type === "katakana"}
+              onClick={() => dispatch({ type: "setKatakana" })}
+            >
+              ア
+            </FloatingToolbar.Button>
+          </FloatingToolbar.ButtonGroup>
+          <FloatingToolbar.ToggleButton
+            title="toggle diacritics"
+            toggled={showDiacritics}
+            onToggle={toggleDiacritics}
+            className="text-base pl-4.5 pt-4"
           >
-            あ
-          </Toolbar.Button>
-          <Toolbar.Button
-            selected={type === "katakana"}
-            onClick={() => dispatch({ type: "setKatakana" })}
+            ゛゜
+          </FloatingToolbar.ToggleButton>
+          <FloatingToolbar.ToggleButton
+            title="toggle palatalizers"
+            toggled={showPalatalizers}
+            onToggle={togglePalatalizers}
+            className="text-[9px]"
           >
-            ア
-          </Toolbar.Button>
-        </Toolbar.ButtonGroup>
-        <Toolbar.ToggleButton
-          title="toggle diacritics"
-          toggled={showDiacritics}
-          onToggle={toggleDiacritics}
-          className="text-base pl-4.5 pt-4"
-        >
-          ゛゜
-        </Toolbar.ToggleButton>
-        <Toolbar.ToggleButton
-          title="toggle palatalizers"
-          toggled={showPalatalizers}
-          onToggle={togglePalatalizers}
-          className="text-[9px]"
-        >
-          やゆよ
-        </Toolbar.ToggleButton>
-      </Toolbar>
+            やゆよ
+          </FloatingToolbar.ToggleButton>
+        </FloatingToolbar.Toolbar>
+      </FloatingToolbar>
     </div>
   );
 };

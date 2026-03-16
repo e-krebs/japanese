@@ -1,2 +1,2 @@
+export * from "./FloatingToolbar";
 export * from "./Kana";
-export * from "./Toolbar";

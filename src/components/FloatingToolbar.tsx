@@ -56,16 +56,30 @@ const ToggleButton = ({ title, toggled, children, onToggle, className }: ToggleB
 
 interface ToolbarProps {
   children: ReactNode;
-  position?: "top" | "bottom";
-  color?: "standard" | "vibrant";
+  color: "standard" | "vibrant";
 }
 
-export const Toolbar = ({ children, position = "bottom", color = "standard" }: ToolbarProps) => (
+const Toolbar = ({ children, color }: ToolbarProps) => (
   <div
     data-color={color}
     className={twMerge(
-      "fixed p-3 rounded-full flex items-center justify-center gap-2 shadow-md shadow-slate-900",
+      "p-3 rounded-full flex items-center justify-center gap-2 shadow-md shadow-slate-900",
       "data-[color=vibrant]:bg-rose-800 data-[color=standard]:bg-slate-800",
+    )}
+  >
+    {children}
+  </div>
+);
+
+interface FloatingToolbarProps {
+  children: ReactNode;
+  position: "top" | "bottom";
+}
+
+export const FloatingToolbar = ({ children, position }: FloatingToolbarProps) => (
+  <div
+    className={twMerge(
+      "fixed flex items-center justify-center",
       position === "top" ? "top-4" : "bottom-4",
     )}
   >
@@ -73,6 +87,7 @@ export const Toolbar = ({ children, position = "bottom", color = "standard" }: T
   </div>
 );
 
-Toolbar.ButtonGroup = ButtonGroup;
-Toolbar.Button = Button;
-Toolbar.ToggleButton = ToggleButton;
+FloatingToolbar.Toolbar = Toolbar;
+FloatingToolbar.ButtonGroup = ButtonGroup;
+FloatingToolbar.Button = Button;
+FloatingToolbar.ToggleButton = ToggleButton;
