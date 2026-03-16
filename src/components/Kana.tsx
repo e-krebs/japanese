@@ -25,7 +25,7 @@ export const Kana = ({ kana, isDiacritic = false, isPalatalizer = false }: KanaP
           "px-4 py-2 w-17.5 flex flex-col items-center border border-slate-500 rounded-md active:bg-slate-600",
           (isDiacritic || isPalatalizer) && "w-auto flex-row justify-center gap-2",
           (hasPalatalizers || isPalatalizer) && "bg-sky-500/10",
-          (hasDiacritics || isDiacritic) && "border-yellow-400/50",
+          (hasDiacritics || isDiacritic) && "border-yellow-400/50 min-w-full",
         )}
         onClick={() => addKana(kana)}
       >
