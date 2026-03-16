@@ -55,8 +55,8 @@ export const App = () => {
             >
               <Copy className="size-4" />
             </Toolbar.Button>
-            <Toolbar.Button
-              className="flex flex-col w-auto px-3 py-1 gap-y-2 overflow-hidden"
+            <div
+              className="h-10 w-auto flex flex-col items-center justify-center cursor-pointer px-3 py-1 gap-y-2 overflow-hidden"
               onClick={toggleShownType}
             >
               <div
@@ -68,7 +68,7 @@ export const App = () => {
                 {kanas.map((kana) => kana.char).join("")}
               </div>
               <div className={twMerge("text-2xl")}>{kanas.map((kana) => kana.romaji).join("")}</div>
-            </Toolbar.Button>
+            </div>
             <Toolbar.Button onClick={clearKanas}>
               <X className="size-4" />
             </Toolbar.Button>
