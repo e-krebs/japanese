@@ -19,8 +19,8 @@ const Button = ({ selected, children, onClick, className }: ButtonProps) => (
     className={twMerge(
       "size-10 flex items-center justify-center rounded-xl transition-[border-radius] duration-150",
       selected
-        ? "color-vibrant:bg-rose-200 color-standard:bg-slate-200 text-slate-800 rounded-full!"
-        : "color-vibrant:hover:bg-rose-900 color-standard:hover:bg-slate-700 active:color-vibrant:bg-rose-200 active:color-standard:bg-slate-200 active:text-slate-800",
+        ? "color-vibrant:bg-rose-200 color-vibrant:text-rose-800 color-standard:bg-slate-200 color-standard:text-slate-800 rounded-full!"
+        : "color-vibrant:hover:bg-rose-900 color-standard:hover:bg-slate-700 active:color-vibrant:bg-rose-200 active:color-vibrant:text-rose-800 active:color-standard:bg-slate-200 active:color-standard:text-slate-800",
       className,
     )}
     disabled={selected}
@@ -43,7 +43,7 @@ const ToggleButton = ({ title, toggled, children, onToggle, className }: ToggleB
     className={twMerge(
       "size-10 rounded-full flex items-center justify-center p-2 transition-all duration-75 overflow-hidden",
       toggled
-        ? "color-vibrant:bg-rose-200 color-standard:bg-slate-200 text-slate-800"
+        ? "color-vibrant:bg-rose-200 color-vibrant:text-rose-800 color-standard:bg-slate-200 color-standard:text-slate-800"
         : "color-vibrant:hover:bg-rose-900 color-standard:hover:bg-slate-700",
       className,
     )}
@@ -79,7 +79,7 @@ interface FloatingToolbarProps {
 export const FloatingToolbar = ({ children, position }: FloatingToolbarProps) => (
   <div
     className={twMerge(
-      "fixed flex items-center justify-center",
+      "fixed flex items-center justify-center gap-2",
       position === "top" ? "top-4" : "bottom-4",
     )}
   >
