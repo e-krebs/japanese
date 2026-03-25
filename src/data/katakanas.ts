@@ -156,4 +156,16 @@ export const katakanas = [
     { char: "ユ", romaji: "yu" },
     { char: "ヨ", romaji: "yo" },
   ],
+  [
+    { char: "ッ", romaji: "2x" },
+    { char: "ー", romaji: "x2" },
+    { char: "。", romaji: "." },
+  ],
+  [
+    { char: "ァ", romaji: "a" },
+    { char: "ィ", romaji: "i" },
+    { char: "ゥ", romaji: "u" },
+    { char: "ェ", romaji: "e" },
+    { char: "ォ", romaji: "o" },
+  ],
 ] as const;

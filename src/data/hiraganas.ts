@@ -156,4 +156,8 @@ export const hiraganas = [
     { char: "ゆ", romaji: "yu" },
     { char: "よ", romaji: "yo" },
   ],
+  [
+    { char: "っ", romaji: "2x" },
+    { char: "。", romaji: "." },
+  ],
 ] as const;
